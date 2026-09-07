@@ -28,7 +28,7 @@ ACCENT = "#8D7EDC"
 ERROR = "#e06c75"
 BODY_FONT = ("TkDefaultFont", 13)
 
-BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+BASE = Path(__file__).resolve().parent
 
 USER_PRESETS_FILE = Path.home() / ".local/Lution/fflag_user_presets.json"
 
@@ -1380,7 +1380,7 @@ def build_playhistory(app, parent, pad):
     refresh()
 
 def _fit_icon(img, target=128):
-    
+
     def steps(src):
         if src == target:
             return (1, 1)
@@ -1413,7 +1413,7 @@ def build_marketplace(app, parent, pad):
     import mods as mods_mod
     import log
 
-    base_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+    base_dir = Path(__file__).resolve().parent
     placeholder_file = base_dir / "placeholder.png"
 
     status = tk.Label(parent, text="", bg=parent["bg"], fg=FG_DIM,

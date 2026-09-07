@@ -84,7 +84,7 @@ LUTION_LOGO_PNG = CONFIG_DIR / "lution_logo.png"
 
 def _resolve_lution_logo():
     import sys
-    base = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+    base = Path(__file__).resolve().parent
     png = base / "lution.png"
     if png.exists():
         return png
@@ -114,7 +114,7 @@ def apply_theme_defaults(theme):
 def _ensure_default_logo(cfg):
     import sys
 
-    src = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) / "sober.svg"
+    src = Path(__file__).resolve().parent / "sober.svg"
     if src.exists():
         up_to_date = False
         if DEFAULT_LOGO.exists():
@@ -691,6 +691,7 @@ def open_in(app, url=None):
     return win
 
 def refresh_shortcut():
+    print("sasdsas")
     if not DESKTOP_FILE.exists():
         return
     _install_shortcut(get_config())
@@ -703,8 +704,8 @@ def _clean_child_env():
 def _launch_full_lution(root):
     import sys
     log.info("Bootstrapper: opening Lution")
-    if getattr(sys, "frozen", False):
-        cmd = [sys.executable]
+    if _is_frozen() or _is_compiled():
+        cmd = [sys.argv[0]]
         cwd = None
     else:
         cmd = [sys.executable, str(Path(__file__).parent / "main.py")]
@@ -757,13 +758,17 @@ def _is_frozen():
     import sys
     return getattr(sys, "frozen", False)
 
+def _is_compiled():
+    return "__compiled__" in globals()
+
 def _sync_stable_binary():
     import sys
 
-    if not _is_frozen():
+    if not _is_frozen() or not _is_compiled():
         return
 
-    exe = Path(sys.executable)
+    exe = Path(sys.argv[0]).resolve()
+    print(exe)
     try:
         stale = (not STABLE_BIN.exists()
                  or exe.stat().st_size != STABLE_BIN.stat().st_size
@@ -776,7 +781,7 @@ def _sync_stable_binary():
 
 def _exec_command():
     main_py = Path(__file__).parent / "main.py"
-    if _is_frozen():
+    if _is_frozen() or _is_compiled():
         return f'"{STABLE_BIN}" --launcher'
     return f'python3 "{main_py}" --launcher'
 
@@ -786,7 +791,7 @@ def _install_shortcut(cfg):
     _sync_stable_binary()
 
     import sys
-    icon_src = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) \
+    icon_src = Path(__file__).resolve().parent \
                / "sober.svg"
     icon = CONFIG_DIR / "sober.svg"
     try:

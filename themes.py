@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 import json
 
-BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+BASE = Path(__file__).resolve().parent
 THEME_FILE = Path.home() / ".local/Lution/theme.json"
 
 DEFAULTS = {

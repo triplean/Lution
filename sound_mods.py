@@ -8,7 +8,7 @@ SOBER_APP_ID = "org.vinegarhq.Sober"
 SOBER_BASE = Path.home() / ".var/app" / SOBER_APP_ID / "data/sober"
 OVERLAY_SOUNDS_DIR = SOBER_BASE / "asset_overlay/content/sounds"
 
-BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+BASE = Path(__file__).resolve().parent
 
 SOUND_STATES = [
     "oof.ogg",

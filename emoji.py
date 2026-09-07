@@ -11,7 +11,7 @@ OVERLAY_FONT_DIR = SOBER_BASE / "asset_overlay/content/fonts"
 
 EMOJI_FONT_NAMES = ["RobloxEmoji.ttf", "TwemojiMozilla.ttf"]
 
-BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+BASE = Path(__file__).resolve().parent
 PRESETS_DIR = BASE / "emoji_presets"
 INSTALLED_EMOJI_DIR = Path.home() / ".local" / "share" / "Lution" / "installed_emoji"
 

@@ -10,7 +10,7 @@ import threading
 
 import themes
 
-BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+BASE = Path(__file__).resolve().parent
 CONFIG_FILE = BASE / "ui.md"
 
 _theme = themes.load_theme()
@@ -393,7 +393,7 @@ class Lution(tk.Tk):
         return None
 
     def _global_scroll(self, event):
-        
+
         try:
             target = self.winfo_containing(event.x_root, event.y_root)
         except (KeyError, tk.TclError):
@@ -571,7 +571,8 @@ if __name__ == "__main__":
         try:
             import bootstrapper
             bootstrapper.refresh_shortcut()
-        except Exception:
+        except Exception as e:
+            log.error(e)
             pass
         app = Lution()
         app.mainloop()
