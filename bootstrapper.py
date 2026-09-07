@@ -84,7 +84,11 @@ LUTION_LOGO_PNG = CONFIG_DIR / "lution_logo.png"
 
 def _resolve_lution_logo():
     import sys
-    base = Path(__file__).resolve().parent
+    if _is_compiled():
+        base = Path(__file__).resolve().parent
+    else:
+        base = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+
     png = base / "lution.png"
     if png.exists():
         return png
@@ -114,7 +118,11 @@ def apply_theme_defaults(theme):
 def _ensure_default_logo(cfg):
     import sys
 
-    src = Path(__file__).resolve().parent / "sober.svg"
+    if _is_compiled():
+        src = Path(__file__).resolve().parent / "sober.svg"
+    else:
+        src = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) / "sober.svg"
+
     if src.exists():
         up_to_date = False
         if DEFAULT_LOGO.exists():
@@ -691,7 +699,6 @@ def open_in(app, url=None):
     return win
 
 def refresh_shortcut():
-    print("sasdsas")
     if not DESKTOP_FILE.exists():
         return
     _install_shortcut(get_config())
@@ -768,7 +775,6 @@ def _sync_stable_binary():
         return
 
     exe = Path(sys.argv[0]).resolve()
-    print(exe)
     try:
         stale = (not STABLE_BIN.exists()
                  or exe.stat().st_size != STABLE_BIN.stat().st_size
@@ -791,8 +797,12 @@ def _install_shortcut(cfg):
     _sync_stable_binary()
 
     import sys
-    icon_src = Path(__file__).resolve().parent \
-               / "sober.svg"
+
+    if _is_compiled():
+        icon_src = Path(__file__).resolve().parent / "sober.svg"
+    else:
+        icon_src = Path(getattr(sys, "_MEIPASS", Path(__file__).parent)) / "sober.svg"
+
     icon = CONFIG_DIR / "sober.svg"
     try:
         if icon_src.exists():

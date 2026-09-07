@@ -3,7 +3,13 @@ from pathlib import Path
 import sys
 import json
 
-BASE = Path(__file__).resolve().parent
+COMPILED = "__compiled__" in globals()
+
+if COMPILED:
+    BASE = Path(__file__).resolve().parent
+else:
+    BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+
 THEME_FILE = Path.home() / ".local/Lution/theme.json"
 
 DEFAULTS = {

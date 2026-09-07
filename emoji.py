@@ -4,6 +4,8 @@ from pathlib import Path
 import shutil
 import sys
 
+COMPILED = "__compiled__" in globals()
+
 SOBER_APP_ID = "org.vinegarhq.Sober"
 SOBER_BASE = Path.home() / ".var/app" / SOBER_APP_ID / "data/sober"
 APK_DIR = SOBER_BASE / "packages/x86_64/com.roblox.client"
@@ -11,7 +13,11 @@ OVERLAY_FONT_DIR = SOBER_BASE / "asset_overlay/content/fonts"
 
 EMOJI_FONT_NAMES = ["RobloxEmoji.ttf", "TwemojiMozilla.ttf"]
 
-BASE = Path(__file__).resolve().parent
+if COMPILED:
+    BASE = Path(__file__).resolve().parent
+else:
+    BASE = Path(getattr(sys, "_MEIPASS", Path(__file__).parent))
+
 PRESETS_DIR = BASE / "emoji_presets"
 INSTALLED_EMOJI_DIR = Path.home() / ".local" / "share" / "Lution" / "installed_emoji"
 
